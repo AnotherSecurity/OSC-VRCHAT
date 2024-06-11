@@ -3,21 +3,22 @@ import time
 from pythonosc import udp_client
 from datetime import datetime
 
-ip = "Your IPv4"
+ip = "IPv4"
 port = 9000
 
 client = udp_client.SimpleUDPClient(ip, port)
 
 def send_time_to_chatbox():
+    message_count = 0
     while True:
         try:
             now = datetime.now()
             current_time = now.strftime("%I:%M %p")
             message = f"😈 {current_time} 😈"
-
             client.send_message("/chatbox/input", [message, True])
+            message_count += 1
 
-            print(f"Sent OSC message with current time: {current_time}")
+            print(f"Sent OSC message with current time: {current_time} x{message_count}\r", end="")
             time.sleep(2)
 
         except Exception as e:
