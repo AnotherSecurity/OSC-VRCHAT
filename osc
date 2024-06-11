@@ -1,0 +1,27 @@
+import threading
+import time
+from pythonosc import udp_client
+from datetime import datetime
+
+ip = "Your IPv4"
+port = 9000
+
+client = udp_client.SimpleUDPClient(ip, port)
+
+def send_time_to_chatbox():
+    while True:
+        try:
+            now = datetime.now()
+            current_time = now.strftime("%I:%M %p")
+            message = f"😈 {current_time} 😈"
+
+            client.send_message("/chatbox/input", [message, True])
+
+            print(f"Sent OSC message with current time: {current_time}")
+            time.sleep(2)
+
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+send_time_thread = threading.Thread(target=send_time_to_chatbox)
+send_time_thread.start()
